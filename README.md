@@ -11,7 +11,7 @@ Built with streamlit in python to demonstrate full text search functionality via
 5. from within this folder in the conda prompt run
 
 ```cmd
-streamlit run SearchDemo.py
+streamlit run app.py
 ```
 
 The app will open in the browser, press ctrl+c to end the process early.
