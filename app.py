@@ -2,17 +2,16 @@
 To Run:
 streamlit run SearchDemo.py
 """
-
 import streamlit as st
 import openai
-import utils
+import dreamweaver.utils as utils
 
 # Defining The Application Variables
-with open ('env.txt', 'r') as f:
-    api_key = f.read()
-openai.api_key = api_key
-# Defining The Application UI
+openai.api_key = st.secrets["OPENAI_API_KEY"]
+token = st.secrets["PUBLICKEY"]
+baseurl = st.secrets["URL"]
 
+# Defining The Application UI
 def main():    
     
     st.title("Woven Mining Project Search")    
@@ -26,7 +25,8 @@ def main():
 
     if st.button('Search'):
         # Here you can call your function using the user's input
-        response = utils.make_query(user_input)
+        #response = utils.make_query(user_input)
+        response = utils.query_supabase(query=user_input, baseurl=baseurl, token=token, return_count=15)
         # Write the result to the page
         st.write(response)
 
