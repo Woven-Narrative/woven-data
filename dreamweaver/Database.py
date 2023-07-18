@@ -10,7 +10,8 @@ class Database:
     
     # cache to prevent multiple calls to the API
     @st.cache
-    def get_similar_documents(self, match_threshold: float, match_count: int, query_embedding: str, baseurl: str, token: str): 
+    @staticmethod
+    def get_similar_documents(self, match_threshold: float, match_count: int, text_embedding: str): 
         """
         Returns a set of matched DB rows based on the files cosine similarity.
         Match threshold is the minimum match score you want in your responses.
@@ -25,19 +26,19 @@ class Database:
                 'apikey': self.token,
                 'Authorization': 'Bearer ' + self.token
                 }
-        url = baseurl + "/rest/v1/rpc/match_documents"
+        url = self.baseurl + "/rest/v1/rpc/match_documents"
         body_json = {
                 'match_threshold':match_threshold,
                 'match_count':match_count,
-                'query_embedding':query_embedding
+                'query_embedding':text_embedding
                 }
         
         # make the request
         response = requests.post(url, 
                                 headers=headers,
-                                json=body_json)
+                                json=body_json)        
 
-        # check and return response
+        # format the json response
         if (response.ok):
             normalized = pd.json_normalize(response.json())         
             return normalized

@@ -5,6 +5,7 @@ streamlit run SearchDemo.py
 import streamlit as st
 from datetime import date
 import pandas as pd
+from dreamweaver import chains
 
 # Defining The Application UI
 def main():    
@@ -25,9 +26,11 @@ def main():
         "start_date":date(2017, 7, 6),
         "end_date":date(2022, 7, 6),
         "development_stage":"",
-        "is_operating":True
+        "is_operating":True,
+        "return_max":10
     }
     
+    # temp var to show us what the request looks like in development
     request = {}
     
     # Sidebar ===============================
@@ -68,6 +71,12 @@ def main():
              'Columbia','Chile','Peru','France','United Kingdom','Australia',
              'Bolivia','Angola','Sierra Leon']
         )
+        
+        filters["return_max"] = st.number_input("Max Response Length:", 
+                                                step=1, 
+                                                max_value=100, 
+                                                min_value=1
+                                            )
 
     # Main Area ===============================
     
@@ -91,16 +100,15 @@ def main():
 
     if st.button('Search'):
         # Here you can call your function using the user's input
-        #response = Chains.query_supabase(query=user_input, return_count=15)
+        response = chains.query_supabase(query=user_input, filters=filters)
         request = filters
-
-
+        # here is where you use the prompt and filters to call a chain
     
     st.dataframe(df, use_container_width=True)
     
     st.json(request)
     
-    
+    st.write(response)
 
 # run the app
 if "__main__" == __name__:
