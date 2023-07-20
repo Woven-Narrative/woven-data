@@ -100,7 +100,7 @@ def main():
 
     if st.button('Search'):
         # Here you can call your function using the user's input
-        response = chains.query_supabase(query=user_input, filters=filters)
+        response = chains.find_similar_projects(criteria=user_input, filters=filters)
         request = filters
         # here is where you use the prompt and filters to call a chain
     
@@ -108,7 +108,7 @@ def main():
     
     st.json(request)
     
-    st.write(response)
+    st.write(response.type)
 
 # run the app
 if "__main__" == __name__:
