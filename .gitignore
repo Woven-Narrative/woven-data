@@ -1,2 +1,4 @@
 data
 env.txt
+secrets.toml
+.streamlit/secrets.toml
