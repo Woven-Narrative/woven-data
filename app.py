@@ -1,20 +1,27 @@
-"""
-To Run:
-streamlit run SearchDemo.py
-"""
 import streamlit as st
 from datetime import date
 import pandas as pd
-from dreamweaver import chains
+from dreamweaver.chains import Chains
 
 # Defining The Application UI
 def main():    
     
+    # needs to be called first
     st.set_page_config(
         page_title="Woven Mining Project Search",
         page_icon=":pick:",
         layout="wide",
     )
+    
+    # setup chains
+    @st.cache
+    def setup_chains():        
+        chains = Chains()
+        return chains
+    
+    chains = setup_chains()
+    
+    # setup filters
     
     df = pd.DataFrame(columns=['Project', 'Company', 'Date', 'LLM Response'])
     
@@ -27,13 +34,17 @@ def main():
         "end_date":date(2022, 7, 6),
         "development_stage":"",
         "is_operating":True,
-        "return_max":10
+        "return_max":50
     }
     
     # temp var to show us what the request looks like in development
     request = {}
     
     # Sidebar ===============================
+    
+    # mine type
+    # how does the company set their reserve price vs market price
+    # have market prices for resources selected on the screen    
     
     with st.sidebar:        
         
@@ -100,15 +111,9 @@ def main():
 
     if st.button('Search'):
         # Here you can call your function using the user's input
-        response = chains.find_similar_projects(criteria=user_input, filters=filters)
-        request = filters
-        # here is where you use the prompt and filters to call a chain
-    
-    st.dataframe(df, use_container_width=True)
-    
-    st.json(request)
-    
-    st.write(response.type)
+        response = chains.find_similar_projects(criteria=user_input, filters=filters)    
+        #st.dataframe(df, use_container_width=True)        
+        st.write(response)
 
 # run the app
 if "__main__" == __name__:
