@@ -35,20 +35,9 @@ class Database:
         for file in base_results_dict:
             foundtexts = base_results_dict[file]
             newtextlines = []
-            for line in foundtexts:    
-                replacedline = line.replace(f"<em>{searchtext}</em>", f'<break?><em>{searchtext}</em><break?>')
-                listline = replacedline.split("<break?>")
-                withtups = []
-                for i in listline:
-                    if i == f"<em>{searchtext}</em>":
-                        j = i.replace("<em>","")
-                        h = j.replace("</em>","") 
-                        m = (h, "Match", "#8ef")                       
-                        withtups.append(m)
-                    else:
-                        withtups.append(i)
-                newtextlines.append(withtups)
-                newtextlines.append("\n \n")
+            for line in foundtexts:  
+                replacedline = line.replace("<em>", '<em class="highlight">')    
+                newtextlines.append(replacedline)
             base_results_dict[file] = newtextlines
 
         return base_results_dict

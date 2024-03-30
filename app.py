@@ -41,6 +41,20 @@ def main():
     # how does the company set their reserve price vs market price
     # have market prices for resources selected on the screen    
     
+    st.markdown(
+        """
+        <style>
+            em {
+                text-decoration: none;
+                background: #ffffb3;
+                padding: 3px 6px;
+                color: #000;
+            }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
     with st.sidebar:                
 
         st.title("A Sample of Woven Mining's Technical Reports Dataset")
@@ -99,8 +113,10 @@ def main():
         #st.dataframe(df, use_container_width=True)
         for file in response:
             st.markdown(f"#### {file}")
-            v = response[file]
-            annotated_text(v)
+            rows = response[file]
+            for row in rows:
+                st.markdown(row, unsafe_allow_html=True)
+            #annotated_text(v)
 
         #st.write(response)
 
